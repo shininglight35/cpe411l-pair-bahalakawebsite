@@ -227,6 +227,11 @@
       transform: scale(1.05);
     }
     
+    .settings-btn:hover {
+      background: #5568d3 !important;
+      transform: scale(1.05);
+    }
+    
     .logout-modal {
       position: fixed;
       top: 0;
@@ -249,6 +254,95 @@
       width: 90%;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
       animation: slideIn 0.3s ease;
+    }
+    
+    .settings-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .settings-modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.3s ease;
+    }
+    
+    .setting-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .setting-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .setting-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e0;
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: #667eea;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(24px);
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
@@ -276,7 +370,7 @@
        <div class="avatar avatar-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
         👤
        </div>
-      </div><button id="logout-btn" class="logout-btn" style="padding: 0.5rem 1.5rem; border-radius: 1.5rem; border: none; cursor: pointer; font-weight: 600; background: #ef4444; color: white; transition: all 0.3s ease;"> Logout </button>
+      </div><button id="settings-btn" class="settings-btn" style="padding: 0; border-radius: 50%; border: none; cursor: pointer; font-weight: 600; background: #667eea; color: white; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0;"> <span style="font-size: 1.5rem; line-height: 1; display: block;">⚙️</span> </button> <button id="logout-btn" class="logout-btn" style="padding: 0.5rem 1.5rem; border-radius: 1.5rem; border: none; cursor: pointer; font-weight: 600; background: #ef4444; color: white; transition: all 0.3s ease;"> Logout </button>
      </div>
     </div>
    </nav><!-- Main Feed -->
@@ -544,6 +638,90 @@
       ]);
     }
 
+    // Settings button functionality
+    document.getElementById('settings-btn').addEventListener('click', function() {
+      const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      const modal = document.createElement('div');
+      modal.className = 'settings-modal';
+      modal.innerHTML = `
+        <div class="settings-modal-content">
+          <h2 style="font-size: ${baseSize * 1.5}px; font-weight: 700; margin-bottom: 1.5rem; color: ${textColor};">⚙️ Settings</h2>
+          
+          <div class="setting-item">
+            <label class="setting-label" style="font-size: ${baseSize}px; color: ${textColor};">
+              Notifications
+            </label>
+            <p style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.7; margin-bottom: 0.75rem;">
+              Receive notifications for likes and comments
+            </p>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label" style="font-size: ${baseSize}px; color: ${textColor};">
+              Dark Mode
+            </label>
+            <p style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.7; margin-bottom: 0.75rem;">
+              Switch to dark theme
+            </p>
+            <label class="toggle-switch">
+              <input type="checkbox" id="dark-mode-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label" style="font-size: ${baseSize}px; color: ${textColor};">
+              Auto-play Videos
+            </label>
+            <p style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.7; margin-bottom: 0.75rem;">
+              Automatically play videos in feed
+            </p>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="setting-item">
+            <label class="setting-label" style="font-size: ${baseSize}px; color: ${textColor};">
+              Privacy
+            </label>
+            <p style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.7; margin-bottom: 0.75rem;">
+              Make your profile private
+            </p>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 2rem;">
+            <button class="close-settings-btn" style="padding: 0.75rem 2rem; border-radius: 0.75rem; border: none; background: ${primaryActionColor}; color: white; cursor: pointer; font-weight: 600; font-size: ${baseSize}px; transition: all 0.2s ease;">Close</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.querySelector('.close-settings-btn').addEventListener('click', function() {
+        modal.remove();
+      });
+      
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    });
+    
     // Logout button functionality
     document.getElementById('logout-btn').addEventListener('click', function() {
       const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
@@ -811,5 +989,5 @@
 
     onConfigChange(window.elementSdk ? window.elementSdk.config : defaultConfig);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9abfea623f8d0f',t:'MTc2NzY5NzYyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9ae95277b48d0f',t:'MTc2NzY5OTMyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
