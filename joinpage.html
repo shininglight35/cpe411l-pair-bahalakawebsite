@@ -249,7 +249,7 @@
       </div>
       <div class="flex items-center justify-between mb-6">
        <div class="flex items-center gap-2"><input type="checkbox" id="remember-checkbox" class="checkbox-custom" aria-label="Remember me"> <label for="remember-checkbox" id="remember-text" class="cursor-pointer select-none"></label>
-       </div><a href="#forgot" id="forgot-link" class="font-semibold hover:underline"></a>
+       </div><a href="forgotpage.html" id="forgot-link" class="font-semibold hover:underline"></a>
       </div><button type="submit" id="login-button" class="login-button w-full text-white font-bold py-3 px-6 rounded-full border-none cursor-pointer"></button>
      </form>
      <div class="text-center mt-6"><span id="signup-prompt" class="opacity-70"></span> <a href="signuppage.html" id="signup-link" class="font-bold ml-2 hover:underline"></a>
@@ -442,11 +442,13 @@
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Show success message
-      showMessage('Login successful! Welcome back.', false);
-      
-      loginButton.disabled = false;
-      const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
-      loginButton.textContent = config.login_button_text || defaultConfig.login_button_text;
+showMessage('Login successful! Welcome.', false);
+
+// Redirect to newsfeed after short delay
+setTimeout(() => {
+  window.location.href = "newsfeed.html";
+}, 1000);
+
       
       // Reset form
       loginForm.reset();
