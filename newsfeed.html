@@ -571,21 +571,23 @@
       });
       
       modal.querySelector('.confirm-logout-btn').addEventListener('click', function() {
-        modal.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => {
-          modal.remove();
-          
-          const successNotification = document.createElement('div');
-          successNotification.className = 'share-notification';
-          successNotification.style.background = 'rgba(34, 197, 94, 0.95)';
-          successNotification.textContent = '✓ You have been logged out!';
-          document.body.appendChild(successNotification);
-          
-          setTimeout(() => {
-            successNotification.remove();
-          }, 3000);
-        }, 300);
-      });
+  modal.style.animation = 'fadeOut 0.3s ease';
+  setTimeout(() => {
+    modal.remove();
+
+    const successNotification = document.createElement('div');
+    successNotification.className = 'share-notification';
+    successNotification.style.background = 'rgba(34, 197, 94, 0.95)';
+    successNotification.textContent = '✓ You have been logged out!';
+    document.body.appendChild(successNotification);
+
+    setTimeout(() => {
+      successNotification.remove();
+      window.location.href = "joinpage.html"; // 🔐 redirect to login
+    }, 1200);
+
+  }, 300);
+});
       
       modal.addEventListener('click', function(e) {
         if (e.target === modal) {
