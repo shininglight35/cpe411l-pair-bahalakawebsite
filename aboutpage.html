@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Background Only</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .animated-bg::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            animation: drift 25s ease-in-out infinite;
+        }
+
+        .animated-bg::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(30deg, rgba(255, 255, 255, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.03) 87.5%, rgba(255, 255, 255, 0.03)),
+                linear-gradient(150deg, rgba(255, 255, 255, 0.03) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.03) 87.5%, rgba(255, 255, 255, 0.03));
+            background-size: 80px 140px;
+            background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
+            top: -200px;
+            right: -200px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent);
+            bottom: -150px;
+            left: -150px;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(50px, -50px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-30px, 30px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(40px, 40px) scale(1.02);
+            }
+        }
+
+
+        /* Center content vertically */
+        .center-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 30px;
+            gap: 18px;
+        }
+
+        .orange-btn {
+            padding: 16px 32px;
+            border-radius: 999px;
+            border: none;
+            background: #f59e0b;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+            transition: transform .2s, box-shadow .2s;
+            display: inline-block;
+        }
+
+        .orange-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.55);
+        }
+
+        .white-link {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .white-link:hover {
+            opacity: 0.8;
+        }
+
+        .top-left-text {
+            position: relative;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .top-left-text:hover {
+            opacity: 0.8;
+        }
+
+        h1 {
+            color: white;
+            font-weight: 900;
+            font-size: 52px;
+            margin-bottom: 24px;
+            text-align: center;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        p {
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .container-box {
+            border-radius: 15px;
+            width: 400px;
+            padding: 20px;
+            margin: 10px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-size {
+            font-size: 52px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="animated-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <a href="index.html" class="top-left-text">
+        ← Back to Home
+    </a>
+
+    <div class="center-wrapper">
+
+        <h1>What Makes Us Different</h1>
+        <div class="container-box">
+            <div class="icon-size">📝</div>
+            <h2>Share Your Thoughts</h2>
+            <p>Post anything on your mind - stories, photos, videos, or just random thoughts. Express yourself freely
+                without limits.</p>
+        </div>
+        <div class="container-box">
+            <div class="icon-size">❤️</div>
+            <h2>React & Connect</h2>
+            <p>Show love, support, or your take on posts with reactions. Engage with your community in meaningful ways.
+            </p>
+        </div>
+        <div class="container-box">
+            <div class="icon-size">🌐</div>
+            <h2>Discover Content</h2>
+            <p>Explore trending posts, follow interesting people, and build your feed around what matters to you.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
