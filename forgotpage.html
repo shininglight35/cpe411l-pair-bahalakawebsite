@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password - Bahala Ka</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap');
+    
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: hidden;
+    }
+    
+    .animated-bg::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+      animation: drift 25s ease-in-out infinite;
+    }
+    
+    .animated-bg::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(30deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03)),
+        linear-gradient(150deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03));
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
+      top: -200px;
+      right: -200px;
+      animation-delay: 0s;
+    }
+    
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent);
+      bottom: -150px;
+      left: -150px;
+      animation-delay: 7s;
+    }
+    
+    .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: 3s;
+    }
+    
+    @keyframes drift {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      33% {
+        transform: translate(30px, -30px) scale(1.1);
+      }
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(50px, -50px) scale(1.05);
+      }
+      50% {
+        transform: translate(-30px, 30px) scale(0.95);
+      }
+      75% {
+        transform: translate(40px, 40px) scale(1.02);
+      }
+    }
+    
+    .login-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      outline: none;
+    }
+    
+    .input-field:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .input-label {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      color: #64748b;
+    }
+    
+    .input-field:focus + .input-label,
+    .input-field:not(:placeholder-shown) + .input-label {
+      top: -0.5rem;
+      font-size: 0.75rem;
+      background: white;
+      padding: 0 0.5rem;
+      color: #667eea;
+    }
+    
+    .login-button {
+      transition: all 0.3s ease;
+    }
+    
+    .login-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message-box {
+      padding: 0.875rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    
+    .message-box.show {
+      display: block;
+    }
+    
+    .message-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .message-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto">
+   <div class="animated-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+   </div>
+   <main class="min-h-full flex items-center justify-center px-6 py-12 relative z-10">
+    <div class="login-card rounded-2xl p-8 w-full max-w-md fade-in">
+     <div class="text-center mb-8">
+      <h1 id="page-title" class="font-bold mb-2"></h1>
+      <p id="page-subtitle" class="opacity-70"></p>
+     </div>
+     <div id="message-box" class="message-box"></div>
+     <form id="forgot-form">
+      <div class="input-group">
+        <input type="email" id="email-input" class="input-field" placeholder=" " required aria-label="Email address">
+        <label for="email-input" id="email-label" class="input-label"></label>
+      </div>
+      <button type="submit" id="reset-button" class="login-button w-full text-white font-bold py-3 px-6 rounded-full border-none cursor-pointer"></button>
+     </form>
+     <div class="text-center mt-6">
+      <a href="joinpage.html" id="back-to-login" class="font-bold hover:underline"></a>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#667eea",
+      surface_color: "#ffffff",
+      text_color: "#1a202c",
+      primary_action_color: "#f59e0b",
+      font_family: "Poppins",
+      font_size: 16,
+      page_title: "Forgot Your Password?",
+      page_subtitle: "Enter your email to reset your password",
+      email_label: "Email Address",
+      reset_button_text: "Send Reset Link",
+      back_to_login_text: "Back to login"
+    };
+
+    async function onConfigChange(config) {
+      const baseFont = `${config.font_family || defaultConfig.font_family}, system-ui, -apple-system, sans-serif`;
+      document.body.style.fontFamily = baseFont;
+      const loginCard = document.querySelector('.login-card');
+      loginCard.style.backgroundColor = config.surface_color || defaultConfig.surface_color;
+      loginCard.style.color = config.text_color || defaultConfig.text_color;
+
+      document.getElementById('page-title').textContent = config.page_title || defaultConfig.page_title;
+      document.getElementById('page-subtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      document.getElementById('email-label').textContent = config.email_label || defaultConfig.email_label;
+      const resetBtn = document.getElementById('reset-button');
+      resetBtn.textContent = config.reset_button_text || defaultConfig.reset_button_text;
+      resetBtn.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const backLink = document.getElementById('back-to-login');
+      backLink.textContent = config.back_to_login_text || defaultConfig.back_to_login_text;
+      backLink.style.color = config.primary_action_color || defaultConfig.primary_action_color;
+    }
+
+    const forgotForm = document.getElementById('forgot-form');
+    const resetButton = document.getElementById('reset-button');
+    const messageBox = document.getElementById('message-box');
+
+    function showMessage(message, isError = false) {
+      messageBox.textContent = message;
+      messageBox.className = `message-box show ${isError ? 'message-error' : 'message-success'}`;
+      setTimeout(() => {
+        messageBox.classList.remove('show');
+      }, 4000);
+    }
+
+    forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value;
+      resetButton.disabled = true;
+      resetButton.textContent = 'Sending...';
+
+      // Simulate API request
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      showMessage(`A reset link has been sent to ${email}.`, false);
+      resetButton.disabled = false;
+      const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+      resetButton.textContent = config.reset_button_text || defaultConfig.reset_button_text;
+      forgotForm.reset();
+    });
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange
+      });
+    }
+
+    onConfigChange(window.elementSdk ? window.elementSdk.config : defaultConfig);
+  </script>
+ </body>
+</html>
