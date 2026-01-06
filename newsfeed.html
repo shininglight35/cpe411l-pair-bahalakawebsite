@@ -30,7 +30,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f5f7fa;
     }
     
     .navbar {
@@ -221,6 +221,35 @@
     .user-menu:hover {
       background: rgba(102, 126, 234, 0.1);
     }
+    
+    .logout-btn:hover {
+      background: #dc2626 !important;
+      transform: scale(1.05);
+    }
+    
+    .logout-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .logout-modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.3s ease;
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -242,10 +271,12 @@
       </svg>
       <h1 id="site-title" class="font-black text-2xl"></h1>
      </div>
-     <div class="user-menu flex items-center gap-3">
-      <div class="avatar avatar-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-       👤
-      </div>
+     <div class="flex items-center gap-3">
+      <div class="user-menu flex items-center gap-3">
+       <div class="avatar avatar-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        👤
+       </div>
+      </div><button id="logout-btn" class="logout-btn" style="padding: 0.5rem 1.5rem; border-radius: 1.5rem; border: none; cursor: pointer; font-weight: 600; background: #ef4444; color: white; transition: all 0.3s ease;"> Logout </button>
      </div>
     </div>
    </nav><!-- Main Feed -->
@@ -513,6 +544,56 @@
       ]);
     }
 
+    // Logout button functionality
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      const modal = document.createElement('div');
+      modal.className = 'logout-modal';
+      modal.innerHTML = `
+        <div class="logout-modal-content">
+          <h2 style="font-size: ${baseSize * 1.5}px; font-weight: 700; margin-bottom: 1rem; color: ${textColor};">Confirm Logout</h2>
+          <p style="font-size: ${baseSize}px; margin-bottom: 1.5rem; color: ${textColor}; opacity: 0.8;">Are you sure you want to log out?</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button class="cancel-logout-btn" style="padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; color: ${textColor}; font-size: ${baseSize}px; transition: all 0.2s ease;">Cancel</button>
+            <button class="confirm-logout-btn" style="padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: none; background: #ef4444; color: white; cursor: pointer; font-weight: 600; font-size: ${baseSize}px; transition: all 0.2s ease;">Logout</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.querySelector('.cancel-logout-btn').addEventListener('click', function() {
+        modal.remove();
+      });
+      
+      modal.querySelector('.confirm-logout-btn').addEventListener('click', function() {
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+          modal.remove();
+          
+          const successNotification = document.createElement('div');
+          successNotification.className = 'share-notification';
+          successNotification.style.background = 'rgba(34, 197, 94, 0.95)';
+          successNotification.textContent = '✓ You have been logged out!';
+          document.body.appendChild(successNotification);
+          
+          setTimeout(() => {
+            successNotification.remove();
+          }, 3000);
+        }, 300);
+      });
+      
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    });
+    
     // Universal click handler for ALL buttons using event delegation
     document.addEventListener('click', function(e) {
       const target = e.target;
@@ -728,5 +809,5 @@
 
     onConfigChange(window.elementSdk ? window.elementSdk.config : defaultConfig);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9a615b373c8d0f',t:'MTc2NzY5Mzc1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9abfea623f8d0f',t:'MTc2NzY5NzYyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
