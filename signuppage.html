@@ -472,6 +472,12 @@
       signupButton.disabled = false;
       const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
       signupButton.textContent = config.signup_button_text || defaultConfig.signup_button_text;
+
+      // Redirect to login page after signup
+setTimeout(() => {
+  window.location.href = "joinpage.html"; // your login page
+}, 1200);
+
       
       // Reset form
       signupForm.reset();
